@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminController;
+use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Guest\DashboardController as GuestController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,7 @@ Auth::routes();
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [AdminController::class , 'home'])->name('home');
+    Route::resource("/project", ProjectController::class);
 });
 
 Route::name('guest.')->group(function () {
