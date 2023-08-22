@@ -6,6 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
+            <a href="{{ route("admin.project.create") }}" class="btn btn-sm btn-primary mb-3">Create new project</a>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -24,6 +25,13 @@
                             <td>{{$project->author}}</td>
                             <td>{{$project->image}}</td>
                             <td>{{$project->content}}</td>
+
+                            <td>
+                                <a href="{{ route("admin.project.show", $project->id) }}" class="btn btn-sm btn-primary">Show</a>
+                            </td>
+                            <td>
+                                <a href="{{ route("admin.project.edit", $project->id) }}" class="btn btn-sm btn-success">Edit</a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
