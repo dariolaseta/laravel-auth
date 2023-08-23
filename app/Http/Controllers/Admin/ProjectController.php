@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\Project;
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
@@ -45,17 +46,25 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Project $project)
     {
-        //
+        return view("admin.project.edit", compact("project"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $data = $request->validate([
+            "title" => ["required", "min:3", "max:255", Rule::unique("projects")->ignore($project->id)],
+            "image" => ["url:https"],
+            "content" => ["required", "min:10"],
+        ]);
+
+        $project->update($data);
+
+        return redirect()->route("admin.project.show", compact("project"));
     }
 
     /**
