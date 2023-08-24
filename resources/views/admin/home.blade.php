@@ -15,8 +15,10 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+
                 </div>
             </div>
+            <a href="{{route("admin.project.index")}}" class="btn btn-primary my-3">Admin Panel</a>
         </div>
     </div>
 </div>
