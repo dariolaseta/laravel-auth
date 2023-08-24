@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\Project;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -31,7 +32,21 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "title" => ["required", "unique:projects","min:3", "max:255"],
+            "image" => ["image"],
+            "content" => ["required", "min:10"],
+        ]);
+
+        if ($request->hasFile("image")){
+            $img_path = Storage::put("uploads/projects", $request["image"]);
+            $data["image"] = $img_path;
+        }
+
+        $newProject = Project::create($data);
+        $newProject->save();
+
+        return redirect()->route("admin.project.show", $newProject);
     }
 
     /**
@@ -58,7 +73,7 @@ class ProjectController extends Controller
     {
         $data = $request->validate([
             "title" => ["required", "min:3", "max:255", Rule::unique("projects")->ignore($project->id)],
-            "image" => ["url:https"],
+            "image" => ["image"],
             "content" => ["required", "min:10"],
         ]);
 
